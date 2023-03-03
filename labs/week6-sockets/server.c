@@ -1,5 +1,6 @@
 #include<stdio.h>      // for IO
 #include<string.h>     //for strlen
+#include<stdlib.h>
 #include<sys/socket.h> // for socket
 #include<arpa/inet.h>  //for inet_addr
 #include<unistd.h>     //for write
@@ -61,14 +62,18 @@ int main(int argc , char *argv[])
         //Send the message back to client
         write(cs , message , strlen(message));
     }*/
-    
     while(1) {
         memset(message, 0, 500);
 	//READSIZE = read(cs,message,500);
 	READSIZE = recv(cs , message , 2000 , 0);
         printf("Client said: %s\n", message);
         //puts(message);
-	write(cs , "What ??" , strlen("What ??"));
+    float num = atof(message) * (9.0/5) + 32.0;
+    char mess[500];
+
+    sprintf(mess, "%s Celsius = %.2f Fahrenheit", message, num);
+
+	write(cs, mess, strlen(mess));
     }
  
     if(READSIZE == 0)
